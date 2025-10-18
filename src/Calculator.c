@@ -1,10 +1,10 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include "tokenizer.h"
 #include "parser.h"
 
-#define BUFFER_SIZE 256
 
+#define BUFFER_SIZE 256
 
 
 int main()    
@@ -24,6 +24,7 @@ int main()
 	Token* tokens = tokenize(buffer, &tokens_count);
 
 	printf("Result: %g\n", calculate(tokens, &token_position));
+	printf("========================================================\n");
 
 	
 	#ifdef DEBUG
@@ -44,5 +45,9 @@ int main()
 
 
 	free_token(tokens);
-}
 
+	printf("\nEnter for exit: ");
+	getchar();
+
+	return 0;
+}
