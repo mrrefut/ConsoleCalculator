@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include "tokenizer.h"
 #include "parser.h"
@@ -48,5 +48,6 @@ int main()
 
 	printf("\nEnter for exit: ");
 	getchar();
-}
 
+	return 0;
+}
