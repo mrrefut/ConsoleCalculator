@@ -5,7 +5,7 @@
 
 
 #define BUFFER_SIZE 256
-
+//#define DEBUG
 
 int main()    
 {
@@ -29,6 +29,8 @@ int main()
 	
 	#ifdef DEBUG
 		printf("\n------------ DEBUG -------------\n");
+
+		printf("Total tokens: %d\n", tokens_count);
 		
 		for (int i = 0; i < tokens_count; i++)
 		{
@@ -36,7 +38,8 @@ int main()
 			if (tokens[i].type == TOKEN_VALUE)
 			{
 				printf("VALUE\n");
-			}
+			}	
+
 			else printf("OPERATOR\n");
 		}
 
@@ -48,6 +51,5 @@ int main()
 
 	printf("\nEnter for exit: ");
 	getchar();
-
-	return 0;
 }
+
