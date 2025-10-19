@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -17,13 +18,54 @@ Token* tokenize(const char *buffer, int *tokens_count)
 	{
 		if (buffer[i] == '\0') break;
 
-		if (buffer[i] == '+' || buffer[i] == '-' || buffer[i] == '*' || buffer[i] == '/')
+		/*if (buffer[i] == '+' || buffer[i] == '-' || buffer[i] == '*' || buffer[i] == '/')
 		{
-			tokens[*tokens_count].type = TOKEN_OPERATOR;
+			tokens[*tokens_count].type = token_operator;
 			tokens[*tokens_count].value[0] = buffer[i];
 			tokens[*tokens_count].value[1] = '\0';
+		}*/
+
+		switch (buffer[i])
+		{
+		case '+':
+			tokens[*tokens_count].type = TOKEN_ADD;
+			tokens[*tokens_count].value[0] = buffer[i];
+			tokens[*tokens_count].value[1] = '\0';
+			break;
+
+		case '-':
+			tokens[*tokens_count].type = TOKEN_SUBTRACT;
+			tokens[*tokens_count].value[0] = buffer[i];
+			tokens[*tokens_count].value[1] = '\0';
+			break;
+
+		case '*':
+			tokens[*tokens_count].type = TOKEN_MULTIPLY;
+			tokens[*tokens_count].value[0] = buffer[i];
+			tokens[*tokens_count].value[1] = '\0';
+			break;
+
+		case '/':
+			tokens[*tokens_count].type = TOKEN_DIVIDE;
+			tokens[*tokens_count].value[0] = buffer[i];
+			tokens[*tokens_count].value[1] = '\0';
+			break;
+
+		case '(':
+			tokens[*tokens_count].type = TOKEN_LBRACKET;
+			tokens[*tokens_count].value[0] = buffer[i];
+			tokens[*tokens_count].value[1] = '\0';
+			break;
+
+		case ')':
+			tokens[*tokens_count].type = TOKEN_RBRACKET;
+			tokens[*tokens_count].value[0] = buffer[i];
+			tokens[*tokens_count].value[1] = '\0';
+			break;
+		
 		}
-		else if (isdigit(buffer[i]))
+
+		if (isdigit(buffer[i]))
 		{
 			int counter = i;	//for write int
 
@@ -43,8 +85,9 @@ Token* tokenize(const char *buffer, int *tokens_count)
 			i = counter - 1;
 
 			tokens[*tokens_count].type = TOKEN_VALUE;
+
+			
 		}
-		else continue;
 
 		(*tokens_count)++;
 	}
