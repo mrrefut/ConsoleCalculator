@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <math.h>
 #include "tokenizer.h"
 #include "parser.h"
 
@@ -12,13 +13,13 @@
 
 		return value;
 	}
-	else if (expression[*pos].type == TOKEN_OPERATOR && expression[*pos].value[0] == '(')
+	else if (expression[*pos].type == TOKEN_LBRACKET)
 	{
 		(*pos)++;
 
 		double result = parse_addsub(expression, pos);
 
-		if (expression[*pos].type == TOKEN_OPERATOR && expression[*pos].value[0] == ')')
+		if (expression[*pos].type == TOKEN_RBRACKET)
 		{
 			(*pos)++;
 
@@ -32,17 +33,22 @@ static double parse_muldiv(Token *expression, int *pos)	//find * or /
 {
 	double value_left = parse_num_or_brackets(expression, pos);
 
-	while(expression[*pos].type == TOKEN_OPERATOR && 
-		(expression[*pos].value[0] == '*' || expression[*pos].value[0] == '/'))
+	while(expression[*pos].type == TOKEN_MULTIPLY || 
+		expression[*pos].type == TOKEN_DIVIDE)
 	{
-		char operation = expression[*pos].value[0];
-
+		TokenType operation = expression[*pos].type;
+		
 		(*pos)++;
 
 		double value_right = parse_num_or_brackets(expression, pos);
 
-		if (operation == '*') value_left *= value_right;
-		if (operation == '/') value_left /= value_right;
+		if (operation == TOKEN_MULTIPLY) value_left *= value_right;
+		if (operation == TOKEN_DIVIDE)
+		{
+			if (value_right == 0) return INFINITY;
+			
+			value_left /= value_right;
+		}
 	}
 
 	return value_left;
@@ -52,17 +58,17 @@ static double parse_addsub(Token *expression, int *pos)	//find + or -
 {
 	double value_left = parse_muldiv(expression, pos);
 	
-	while(expression[*pos].type == TOKEN_OPERATOR && 
-		(expression[*pos].value[0] == '+' || expression[*pos].value[0] == '-'))
+	while(expression[*pos].type == TOKEN_ADD || 
+		expression[*pos].type == TOKEN_SUBTRACT)
 	{
-		char operation = expression[*pos].value[0];
-
+		TokenType operation = expression[*pos].type;
+		
 		(*pos)++;
 
 		double value_right = parse_muldiv(expression, pos);
 
-		if (operation == '+') value_left += value_right;
-		if (operation == '-') value_left -= value_right;
+		if (operation == TOKEN_ADD) value_left += value_right;
+		if (operation == TOKEN_SUBTRACT) value_left -= value_right;
  	}
 
 	return value_left;
